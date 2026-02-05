@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}
+ G Menswear | Home
+{% endblock title %}
+
+{% block content %} 
+
+{% include 'includes/slider.html' %}
+
+<section class="home-section bg-light py-4 my-5">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <h4
+          class="mb-3 text-center home-title"
+          style="font-family: &quot;Playfair&quot;;font-weight: 600; font-size: 35px;">Home
+        </h4>
+      </div>
+
+      {% for item in category %}
+      <div class="col-12 col-md-4 mb-4">
+        <a
+          href="{% url 'category_products' item.slug %}"
+          class="text-decoration-none">
+          <div class="modern-card">
+            <div class="modern-img">
+              <img src="{{ item.image.url }}" alt="{{ item.category_name }}" />
+            </div>
+            <div class="modern-content">
+              <h5>{{ item.category_name }}</h5>
+              <p>{{ item.description|truncatechars:60 }}</p>
+              <span class="view-link">View Collection →</span>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% endblock content %}

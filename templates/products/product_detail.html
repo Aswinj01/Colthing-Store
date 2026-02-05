@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="container my-5">
+  <div class="row g-5">
+
+    <!-- IMAGES -->
+    <div class="col-md-6">
+      <div class="product-gallery">
+        <div class="product-thumbs">
+          <img src="{{ product.main_image.url }}" class="thumb active" onclick="changeImage(this)" />
+
+          {% if product.image2 %}
+          <img src="{{ product.image2.url }}" class="thumb" onclick="changeImage(this)" />
+          {% endif %}
+        </div>
+
+        <div class="product-main-img">
+          <img id="mainProductImage" src="{{ product.main_image.url }}" class="img-fluid rounded"
+            alt="{{ product.product_name }}" />
+        </div>
+      </div>
+    </div>
+
+    <!-- DETAILS -->
+    <div class="col-md-6 product-detail-info">
+      <h2 class="fw-bold">{{ product.product_name }}</h2>
+
+      <p>
+        <span class="text-decoration-line-through text-muted">
+          ₹{{ product.original_price }}
+        </span>
+        <span class="fs-4 fw-bold ms-2">
+          ₹{{ product.offer_price }}
+        </span>
+      </p>
+
+      <!-- ADD TO CART FORM -->
+      {% if in_stock %}
+
+      <form method="POST" action="{% url 'add_to_cart' product.id %}">
+        {% csrf_token %}
+
+        <h6 class="mt-4">Select Size</h6>
+
+        <div class="size-selector">
+          {% for size in sizes %}
+          {% if size.stock > 0 %}
+          <label class="size-box">
+            <input type="radio" name="size" value="{{ size.size }}" data-stock="{{ size.stock }}"
+              onclick="showStock(this)" required>
+            <span>{{ size.size }}</span>
+          </label>
+          {% else %}
+          <label class="size-box disabled">
+            <input type="radio" disabled>
+            <span>{{ size.size }}</span>
+          </label>
+          {% endif %}
+          {% endfor %}
+        </div>
+
+        <!-- STOCK DISPLAY -->
+        <div id="stock-text" class="mt-2"></div>
+        <p id="qty-warning" class="text-danger fw-semibold mt-1"></p>
+
+        <!-- QUANTITY -->
+        <h6 class="mt-4">Quantity</h6>
+
+        <div class="quantity-box d-flex align-items-center">
+          <button type="button" class="qty-btn" onclick="changeQty(-1)">−</button>
+
+          <input type="number" id="quantity" name="quantity" class="qty-input" value="1" min="1" readonly />
+
+          <button type="button" class="qty-btn" onclick="changeQty(1)">+</button>
+        </div>
+
+        <p id="qty-warning" class="text-danger mt-1 fw-semibold"></p>
+
+
+        <!-- ADD TO CART -->
+        <button type="submit" id="add-to-cart-btn" class="btn btn-dark btn-lg mt-4 w-100">
+          Add to Cart
+        </button>
+      </form>
+
+      <!-- BUY NOW -->
+      <button id="buy-now-btn" class="btn btn-outline-dark btn-lg mt-3 w-100 buy-now-btn">
+        Buy Now
+      </button>
+
+      {% else %}
+
+      <!-- OUT OF STOCK -->
+      <div class="alert alert-danger text-center fw-bold mt-4">
+        ❌ Out of Stock
+      </div>
+
+      <button class="btn btn-secondary btn-lg mt-3 w-100" disabled>
+        Currently Unavailable
+      </button>
+
+      {% endif %}
+
+      <!-- PRODUCT DETAILS -->
+      <div class="product-details mt-5">
+        <h4 class="fw-bold mb-3">Product Details</h4>
+
+        <p class="text-muted">{{ product.description }}</p>
+
+        <ul class="list-unstyled mt-3">
+          <li>✔ Premium Quality Fabric</li>
+          <li>✔ Comfortable Fit</li>
+          <li>✔ Easy to Wash</li>
+          <li>✔ Perfect for Casual & Formal Wear</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+{% endblock %}
