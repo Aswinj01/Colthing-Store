@@ -66,7 +66,7 @@
 
         <div class="shipping-note">
           Shipping to Tamil Nadu.
-          <a href="#" class="float-end">Change address</a>
+          <a href="{% url 'checkout' %}" class="float-end">Change address</a>
         </div>
 
         <hr>
@@ -77,7 +77,11 @@
         </div>
 
         <button class="checkout-btn w-100 mt-4">
-          PROCEED TO CHECKOUT
+          
+          <a href="{% url 'checkout' %}" class="checkout-btn w-100 mt-4 text-center">
+            PROCEED TO CHECKOUT
+          </a>
+
         </button>
 
         <p class="text-center secure-text">

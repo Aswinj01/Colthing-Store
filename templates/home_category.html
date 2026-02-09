@@ -42,5 +42,35 @@
     </div>
   </div>
 </section>
+<!-- PRODUCTS BELOW CATEGORY -->
+<section class="container my-5">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h4 class="fw-bold">Latest Products</h4>
+  </div>
+
+  <div class="row g-4">
+    {% for product in home_products %}
+    <div class="col-6 col-md-4 col-lg-3">
+      <div class="card product-card h-100">
+
+        <a href="{{ product.get_url }}">
+          <img src="{{ product.main_image.url }}" class="card-img-top">
+        </a>
+
+        <div class="card-body text-center">
+          <h6 class="text-truncate">{{ product.product_name }}</h6>
+
+          <p class="fw-bold mb-1">₹{{ product.offer_price }}</p>
+
+          <a href="{{ product.get_url }}" class="btn btn-dark btn-sm w-100">
+            View Product
+          </a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
 
 {% endblock content %}

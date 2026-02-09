@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="container my-5 checkout-page">
+  <div class="row">
+
+    <!-- LEFT -->
+    <div class="col-lg-7">
+      <h4 class="checkout-title">Billing details</h4>
+
+      <form method="POST" class="checkout-form">
+        {% csrf_token %}
+
+        <div class="row">
+          <div class="col-md-6 form-group">
+            {{ form.first_name.label_tag }}
+            {{ form.first_name }}
+          </div>
+          <div class="col-md-6 form-group">
+            {{ form.last_name.label_tag }}
+            {{ form.last_name }}
+          </div>
+        </div>
+
+        <div class="form-group">
+          {{ form.phone.label_tag }}
+          {{ form.phone }}
+        </div>
+
+        <div class="form-group">
+          {{ form.email.label_tag }}
+          {{ form.email }}
+        </div>
+
+        <div class="form-group">
+          {{ form.address.label_tag }}
+          {{ form.address }}
+        </div>
+
+        <div class="row">
+          <div class="col-md-6 form-group">
+            {{ form.city.label_tag }}
+            {{ form.city }}
+          </div>
+          <div class="col-md-6 form-group">
+            {{ form.state.label_tag }}
+            {{ form.state }}
+          </div>
+        </div>
+
+        <div class="form-group">
+          {{ form.pincode.label_tag }}
+          {{ form.pincode }}
+        </div>
+    </div>
+
+    <div class="col-lg-5">
+      <div class="order-card">
+
+        <h5 class="order-title">Your order</h5>
+
+        <div class="order-header">
+          <span>Product</span>
+          <span>Total</span>
+        </div>
+
+        {% for item in cart_items %}
+        <div class="order-product">
+
+          <div class="product-left">
+            <div class="product-img">
+              <span class="qty-badge">{{ item.quantity }}</span>
+              <img src="{{ item.product.main_image.url }}" alt="">
+            </div>
+
+            <div class="product-info">
+              <p class="product-name">
+                {{ item.product.product_name }}
+              </p>
+              <small>
+                {{ item.size }}
+              </small>
+              <p class="product-price">
+                ₹{{ item.product.price }}
+              </p>
+            </div>
+          </div>
+
+          <div class="product-total">
+            ₹{{ item.product.price }}
+          </div>
+
+        </div>
+        {% endfor %}
+
+        <hr>
+
+        <div class="order-row">
+          <span>Shipping</span>
+          <span>₹{{ shipping }}</span>
+        </div>
+
+        <hr>
+
+        <div class="order-row total-row">
+          <span>Total</span>
+          <span>₹{{ grand_total }}</span>
+        </div>
+
+        <button class="place-order-btn w-100">
+          PLACE ORDER
+        </button>
+
+      </div>
+    </div>
+
+    </form>
+  </div>
+</div>
+{% endblock content %}
