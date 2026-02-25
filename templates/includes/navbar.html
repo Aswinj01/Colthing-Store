@@ -1,8 +1,66 @@
 {% load static %}
 
+{% block content %}
+
+<style>
+  /* =========================================
+   NAVBAR PROFILE SECTION (ADD AT END)
+========================================= */
+
+  .profile-badge {
+    background: #111;
+    border-radius: 50px;
+    border: 1px solid #e0e0e0;
+    padding: 6px 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+  }
+
+  .profile-badge:hover {
+    background: #282727;
+  }
+
+  .profile-avatar {
+    width: 31px;
+    height: 31px;
+    background: #fff;
+    color: #111;
+    font-weight: 600;
+    font-size: 14px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .profile-name {
+    font-family: Georgia;
+    font-weight: 800;
+    font-size: 14px;
+    color: #fff;
+  }
+
+  .logout-btn {
+    background: #ff0000;
+    font-family: 'Trebuchet MS';
+    color: #fff;
+    font-size: 14px;
+    padding: 8px 20px;
+    border-radius: 50px;
+    border: none;
+    text-decoration: none;
+    transition: 0.3s ease;
+  }
+
+  .logout-btn:hover {
+    background: #000;
+  }
+</style>
+
 <nav class="navbar navbar-expand-lg navbar-light fixed-top bg-white shadow-sm">
   <div class="container-fluid">
-
     <!-- BRAND -->
     <a class="navbar-brand brand-text" href="{% url 'home' %}">
       <span class="brand-g">G</span>
@@ -11,20 +69,28 @@
 
     <!-- MOBILE ICONS -->
     <div class="d-flex align-items-center gap-3 d-lg-none">
-      <a href="#" class="icon-btn">
+      {% if user.is_authenticated %}
+      <form method="POST" action="{% url 'logout' %}">
+        {% csrf_token %}
+        <button class="icon-btn border-0 bg-transparent">
+          <i class="bi bi-box-arrow-right"></i>
+        </button>
+      </form>
+      {% else %}
+      <a href="{% url 'login' %}" class="icon-btn">
         <i class="bi bi-person"></i>
       </a>
+      {% endif %}
 
       <a href="{% url 'cart' %}" class="icon-btn position-relative">
         <i class="bi bi-cart"></i>
         {% if cart_count > 0 %}
-          <span class="cart-badge">{{ cart_count }}</span>
+        <span class="cart-badge">{{ cart_count }}</span>
         {% endif %}
       </a>
 
-      <button class="navbar-toggler border-0" type="button"
-              data-bs-toggle="offcanvas"
-              data-bs-target="#offcanvasNavbar">
+      <button class="navbar-toggler border-0" type="button" data-bs-toggle="offcanvas"
+        data-bs-target="#offcanvasNavbar">
         <i class="bi bi-list fs-2"></i>
       </button>
     </div>
@@ -32,7 +98,6 @@
     <!-- DESKTOP MENU -->
     <div class="collapse navbar-collapse d-none d-lg-flex">
       <ul class="navbar-nav mx-auto">
-
         <li class="nav-item">
           <a class="nav-link" href="{% url 'home' %}">Home</a>
         </li>
@@ -44,7 +109,6 @@
           </a>
         </li>
         {% endfor %}
-
       </ul>
 
       <!-- RIGHT SIDE -->
@@ -52,11 +116,33 @@
         <a href="{% url 'cart' %}" class="icon-btn position-relative">
           <i class="bi bi-cart"></i>
           {% if cart_count > 0 %}
-            <span class="cart-badge">{{ cart_count }}</span>
+          <span class="cart-badge">{{ cart_count }}</span>
           {% endif %}
         </a>
 
-        <a href="#" class="login-button">Login</a>
+        {% if user.is_authenticated %}
+        <div class="d-flex align-items-center gap-3">
+
+          <!-- Profile Badge -->
+          <div class="profile-badge d-flex align-items-center gap-2 px-3 py-1">
+            <div class="profile-avatar">
+              {{ user.first_name|default:user.username|slice:":1"|upper }}
+            </div>
+            <span class="profile-name">
+              {{ user.first_name|default:user.username }}
+            </span>
+          </div>
+
+          <!-- Logout Button -->
+          <form method="POST" action="{% url 'logout' %}" class="m-0">
+            {% csrf_token %}
+            <button class="logout-btn  btn-sm">Logout</button>
+          </form>
+
+        </div>
+        {% else %}
+        <a href="{% url 'login' %}" class="login-button">Login</a>
+        {% endif %}
       </div>
     </div>
   </div>
@@ -71,7 +157,6 @@
 
   <div class="offcanvas-body text-center">
     <ul class="navbar-nav mb-4">
-
       <li class="nav-item">
         <a class="nav-link" href="{% url 'home' %}">Home</a>
       </li>
@@ -83,7 +168,7 @@
         </a>
       </li>
       {% endfor %}
-
     </ul>
   </div>
 </div>
+{% endblock content %}

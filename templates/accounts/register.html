@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<style>
+    .register-section {
+        min-height: 85vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #f8f9fa;
+    }
+
+    .register-card {
+        background: #ffffff;
+        margin-bottom: 20px;
+        padding: 45px;
+        border-radius: 16px;
+        width: 100%;
+        max-width: 450px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        border: 1px solid #eee;
+    }
+
+    .register-title {
+        text-align: center;
+        font-weight: 700;
+        color: #e60000;
+        margin-bottom: 30px;
+    }
+
+    .form-control {
+        border-radius: 10px;
+        padding: 12px;
+        border: 1px solid #ddd;
+        transition: 0.3s;
+    }
+
+    .form-control:focus {
+        border-color: #e60000;
+        box-shadow: 0 0 0 0.15rem rgba(230, 0, 0, 0.15);
+    }
+
+    .register-btn {
+        background: #e60000;
+        border: none;
+        padding: 12px;
+        border-radius: 10px;
+        font-weight: 600;
+        transition: 0.3s;
+    }
+
+    .register-btn:hover {
+        background: #cc0000;
+    }
+
+    .login-link a {
+        color: #e60000;
+        font-weight: 600;
+        text-decoration: none;
+    }
+
+    .login-link a:hover {
+        text-decoration: underline;
+    }
+</style>
+
+<div class="register-section">
+    <div class="register-card">
+
+        <h3 class="register-title">Create Account</h3>
+
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-danger">
+            {{ message }}
+        </div>
+        {% endfor %}
+        {% endif %}
+
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <div class="mb-3">
+                <input type="text" name="username" class="form-control" placeholder="Username" required>
+            </div>
+
+            <div class="mb-3">
+                <input type="email" name="email" class="form-control" placeholder="Email" required>
+            </div>
+
+            <div class="mb-3">
+                <input type="password" name="password" class="form-control" placeholder="Password" required>
+            </div>
+
+            <div class="mb-3">
+                <input type="password" name="confirm_password" class="form-control" placeholder="Confirm Password"
+                    required>
+            </div>
+
+            <button type="submit" class="btn register-btn w-100">
+                Register
+            </button>
+        </form>
+
+
+
+        <div class="text-center mt-4 login-link">
+            <small class="text-muted">
+                Already have an account?
+                <a href="{% url 'login' %}">Login here</a>
+            </small>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

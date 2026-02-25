@@ -76,13 +76,9 @@
           <span>₹ {{ grand_total }}</span>
         </div>
 
-        <button class="checkout-btn w-100 mt-4">
-          
-          <a href="{% url 'checkout' %}" class="checkout-btn w-100 mt-4 text-center">
-            PROCEED TO CHECKOUT
-          </a>
-
-        </button>
+        <a href="{% url 'checkout' %}" class="checkout-btn w-100 mt-4 text-center d-block">
+          PROCEED TO CHECKOUT
+        </a>
 
         <p class="text-center secure-text">
           Guaranteed Safe & Secure Checkout

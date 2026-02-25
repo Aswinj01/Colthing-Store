@@ -1,13 +1,20 @@
-# cart/models.py
 from django.db import models
 from django.conf import settings
 from products.models import Product
 
+
 class Cart(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True
+    )
+    session_id = models.CharField(max_length=250, null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.user.username
+        return str(self.user) if self.user else self.session_id
 
 
 class CartItem(models.Model):
@@ -18,6 +25,3 @@ class CartItem(models.Model):
 
     def sub_total(self):
         return self.product.offer_price * self.quantity
-
-    def __str__(self):
-        return self.product.product_name
